@@ -6,8 +6,7 @@ function App() {
   return (
     <>
       <div className="App-header">
-        <h1>React on Rails Blog</h1>
-        <p>React on Rails Blog is a simple blog application built with React and Ruby on Rails.</p>
+        <h1>Rails & React App</h1>
         <PostsList />
       </div>
     </>
