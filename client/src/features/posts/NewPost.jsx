@@ -1,7 +1,7 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../../constants';
+import './NewPost.css'; // Asegúrate de usar la ruta correcta
 
 function NewPost() {
   const [title, setTitle] = useState('');
@@ -10,10 +10,9 @@ function NewPost() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { title, body } = event.target.elements;
     const post = {
-      title: title.value,
-      body: body.value,
+      title: title,
+      body: body,
     };
     fetch(`${API_URL}/posts`, {
       method: 'POST',
@@ -24,19 +23,19 @@ function NewPost() {
     })
     .then(() => {
       console.log('Post created');
-      title.value = '';
-      body.value = '';
+      setTitle('');
+      setBody('');
+      navigate('/posts');
     })
     .catch(error => {
       console.error('Error creating post:', error);
     });
   }
-  
 
   return (
-    <div>
-      <h2>New Post</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="new-post-container">
+      <h2 className="new-post-title">New Post</h2>
+      <form className="new-post-form" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="title">Title:</label>
           <input 
