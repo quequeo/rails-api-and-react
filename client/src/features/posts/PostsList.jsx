@@ -33,11 +33,28 @@ function PostsList () {
         {posts.map(post => (
           <div key={post.id} className='post-container'>
             <h2>
-              <Link to={`/posts/${post.id}`}className='post-title'>
+              <Link to={`/posts/${post.id}`} className='post-title'>
                 {post.title}
                 </Link>
             </h2>
             <p>{post.body}</p>
+            <div>
+              <Link to={`/posts/${post.id}/edit`} className='post-edit'>
+                Edit post
+              </Link>
+            </div>
+            <button onClick={() => {
+              fetch(`${API_URL}/posts/${post.id}`, {
+                method: 'DELETE',
+              })
+              .then(() => {
+                setPosts(posts.filter(p => p.id !== post.id))
+              })
+              .catch(error => {
+                setError(error);
+                console.log(error);
+              });
+            }}>Delete</button>
           </div>
         ))}
       </div>
