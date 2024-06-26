@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_URL } from '../../../constants';
-import './EditPost.css'; // Asegúrate de usar la ruta correcta
+import { TextField, Button, Container, Typography, Box, CircularProgress, Alert } from '@mui/material';
 
 function EditPost() {
   const { id } = useParams();
@@ -49,34 +49,50 @@ function EditPost() {
   }
 
   return (
-    <div className="edit-post-container">
-      <h2 className="edit-post-title">Edit Post</h2>
-      {loading && <p>Loading post...</p>}
-      {error && <p>Error loading post: {error.message}</p>}
-      <form className="edit-post-form" onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Title:</label>
-          <input 
-            type="text" 
-            id="title" 
+    <Container maxWidth="sm">
+      {loading ? (
+        <CircularProgress />
+      ) : error ? (
+        <Alert severity="error">{`Error loading post: ${error.message}`}</Alert>
+      ) : (
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+          <TextField
+            fullWidth
+            id="title"
+            label="Title"
             name="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
+            margin="normal"
+            variant="outlined"
           />
-          <label htmlFor="body">Body:</label>
-          <textarea 
-            id="body" 
+          <TextField
+            fullWidth
+            id="body"
+            label="Body"
             name="body"
             value={body}
             onChange={(e) => setBody(e.target.value)}
             required
+            margin="normal"
+            variant="outlined"
+            multiline
+            rows={4}
           />
-          <button type="submit">Update Post</button>
-        </div>
-      </form>
-    </div>
-  )
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Update Post
+          </Button>
+        </Box>
+      )}
+    </Container>
+  );
 }
 
 export default EditPost;

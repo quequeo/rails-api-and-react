@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../../constants';
-import './NewPost.css'; // Asegúrate de usar la ruta correcta
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
 
 function NewPost() {
   const [title, setTitle] = useState('');
@@ -33,32 +33,44 @@ function NewPost() {
   }
 
   return (
-    <div className="new-post-container">
-      <h2 className="new-post-title">New Post</h2>
-      <form className="new-post-form" onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Title:</label>
-          <input 
-            type="text" 
-            id="title" 
-            name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-          <label htmlFor="body">Body:</label>
-          <textarea 
-            id="body" 
-            name="body"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            required
-          />
-          <button type="submit">Create Post</button>
-        </div>
-      </form>
-    </div>
-  )
+    <Container maxWidth="sm">
+      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+        <TextField
+          fullWidth
+          id="title"
+          label="Title"
+          name="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+          margin="normal"
+          variant="outlined"
+        />
+        <TextField
+          fullWidth
+          id="body"
+          label="Body"
+          name="body"
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          required
+          margin="normal"
+          variant="outlined"
+          multiline
+          rows={4}
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Create Post
+        </Button>
+      </Box>
+    </Container>
+  );
 }
 
 export default NewPost;
