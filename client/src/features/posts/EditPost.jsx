@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_URL } from '../../../constants';
 import { TextField, Button, Container, Typography, Box, CircularProgress, Alert } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 
 function EditPost() {
   const { id } = useParams();
@@ -84,6 +85,7 @@ function EditPost() {
             type="submit"
             fullWidth
             variant="contained"
+            startIcon={<EditIcon />}
             color="primary"
             sx={{ mt: 3, mb: 2 }}
           >

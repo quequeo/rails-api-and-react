@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { API_URL } from '../../../constants';
 import { Typography, Button, Container, Box, CircularProgress, Alert, Paper } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 function PostDetails() {
   const { id } = useParams();
@@ -54,6 +56,7 @@ function PostDetails() {
                   component={Link} 
                   to={`/posts/${id}/edit`} 
                   variant="contained" 
+                  startIcon={<EditIcon />}
                   color="primary" 
                   sx={{ mr: 2 }}
                 >
@@ -61,6 +64,7 @@ function PostDetails() {
                 </Button>
                 <Button 
                   variant="contained" 
+                  startIcon={<DeleteIcon />}
                   color="secondary" 
                   onClick={handleDelete}
                 >

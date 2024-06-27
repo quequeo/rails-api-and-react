@@ -12,7 +12,7 @@ function LightBulbIcon(props) {
 
 export default function ProTip() {
   return (
-    <Typography sx={{ mt: 6, mb: 3, color: 'text.secondary' }}>
+    <Typography sx={{ mt: 4, mb: 3, color: 'text.secondary' }}>
       <LightBulbIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
       {'Pro tip: Rails API backend with React frontend & Material-UI design.'}
     </Typography>
