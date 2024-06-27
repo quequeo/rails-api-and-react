@@ -9,8 +9,8 @@ function PostsNavBar() {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Posts App
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} >
+          POSTS
         </Typography>
         <Button component={Link} to='/posts' color="inherit">
           Home

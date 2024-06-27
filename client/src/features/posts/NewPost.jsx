@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../../constants';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function NewPost() {
   const [title, setTitle] = useState('');
@@ -63,6 +64,7 @@ function NewPost() {
           type="submit"
           fullWidth
           variant="contained"
+          startIcon={<AddBoxIcon />}
           color="primary"
           sx={{ mt: 3, mb: 2 }}
         >

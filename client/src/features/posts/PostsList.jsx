@@ -6,6 +6,8 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 function PostsList() {
   const [posts, setPosts] = useState([]);
@@ -59,12 +61,14 @@ function PostsList() {
                   component={Link}
                   to={`/posts/${post.id}/edit`}
                   variant="contained"
+                  startIcon={<EditIcon />}
                   color="primary"
                 >
                   Edit post
                 </Button>
                 <Button
                   variant="contained" 
+                  startIcon={<DeleteIcon />}
                   color="secondary"
                   onClick={() => handleDelete(post.id)}
                 >

@@ -1,4 +1,10 @@
 import * as React from 'react';
+
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 import { BrowserRouter as Router } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -14,9 +20,9 @@ import PostAppRoutes from './components/posts/PostAppRoutes';
 function App() {
   return (
     <Router>
-      <Container maxWidth="sm">
-        <Box sx={{ my: 4 }}>
-          <Typography variant="h3" component="h1" sx={{ mb: 3 }}>
+      <Container fixed>
+        <Box sx={{ my: 6 }} >
+          <Typography variant="h3" component="h1" sx={{ mb: 2 }}>
             Rails & React App
           </Typography>
           <ProTip />
