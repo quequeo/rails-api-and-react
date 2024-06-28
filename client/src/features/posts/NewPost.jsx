@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API_URL } from '../../../constants';
+import { createPost } from '../../services/postService';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
@@ -11,26 +11,13 @@ function NewPost() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const post = {
-      title: title,
-      body: body,
-    };
-    fetch(`${API_URL}/posts`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(post),
-    })
-    .then(() => {
-      console.log('Post created');
-      setTitle('');
-      setBody('');
-      navigate('/posts');
-    })
-    .catch(error => {
-      console.error('Error creating post:', error);
-    });
+    const post = { title: title, body: body };
+    createPost(post)
+      .then(() => {
+        navigate('/posts');
+      })
+      .catch(error => { console.error('Error creating post:', error); }
+    );
   }
 
   return (

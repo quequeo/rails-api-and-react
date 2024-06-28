@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { API_URL } from '../../../constants';
+import { fetchPostById, updatePost } from '../../services/postService';
 import { TextField, Button, Container, Typography, Box, CircularProgress, Alert } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -13,40 +13,31 @@ function EditPost() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`${API_URL}/posts/${id}`)
-      .then(response => response.json())
-      .then(data => {
+    async function fetchPost() {
+      try {
+        const data = await fetchPostById(id);
         setTitle(data.title);
         setBody(data.body);
         setLoading(false);
-      })
-      .catch(error => {
+      } catch (error) {
         setError(error);
         setLoading(false);
-        console.log(error);
-      });
+      }
+    }
+    fetchPost();
   }, [id]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const updatedPost = {
-      title: title,
-      body: body,
-    };
-    fetch(`${API_URL}/posts/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedPost),
-    })
-    .then(() => {
-      console.log('Post updated');
-      navigate(`/posts/${id}`);
-    })
-    .catch(error => {
-      console.error('Error updating post:', error);
-    });
+    const updatedPost = { title: title, body: body };
+    updatePost(id, updatedPost)
+      .then(() => {
+        navigate(`/posts/${id}`);
+      })
+      .catch(error => {
+        setError(error);
+      }
+    );
   }
 
   return (

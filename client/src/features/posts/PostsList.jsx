@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { API_URL } from '../../../constants';
+import { fetchAllPosts, deletePost } from '../../services/postService';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -15,24 +15,24 @@ function PostsList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`${API_URL}/posts`)
-      .then(response => response.json())
-      .then(data => {
+    async function fetchPosts() {
+      try {
+        const data = await fetchAllPosts();
         setPosts(data);
         setLoading(false);
-      })
-      .catch(error => {
+      } catch (error) {
         setError(error);
         setLoading(false);
         console.log(error);
-      });
+      }
+    }
+    fetchPosts();
   }, []);
 
   const handleDelete = (post_id) => {
-    fetch(`${API_URL}/posts/${post_id}`, 
-      { method: 'DELETE' })
+    deletePost(post_id)
       .then(() => {
-        setPosts(posts.filter(p => p.id !== post_id));
+        setPosts(posts.filter(post => post.id !== post_id));
       })
       .catch(error => {
         setError(error);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { API_URL } from '../../../constants';
+import { fetchPostById, deletePost } from '../../services/postService';
 import { Typography, Button, Container, Box, CircularProgress, Alert, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -13,26 +13,28 @@ function PostDetails() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`${API_URL}/posts/${id}`)
-      .then(response => response.json())
-      .then(data => {
+    async function fetchPost() {
+      try {
+        const data = await fetchPostById(id);
         setPost(data);
         setLoading(false);
-      })
-      .catch(error => {
+      } catch (error) {
         setError(error);
         setLoading(false);
-        console.log(error);
-      });
+      }
+    }
+    fetchPost();
   }, [id]);
 
   const handleDelete = () => {
-    fetch(`${API_URL}/posts/${id}`, { method: 'DELETE' })
-      .then(() => navigate('/posts'))
+    deletePost(id)
+      .then(() => {
+        navigate('/posts');
+      })
       .catch(error => {
         setError(error);
-        console.log(error);
-      });
+      }
+    );
   };
 
   return (
