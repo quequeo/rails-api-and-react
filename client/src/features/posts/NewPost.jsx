@@ -1,64 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPost } from '../../services/postService';
-import { TextField, Button, Container, Typography, Box } from '@mui/material';
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import PostForm from './PostForm';
 
 function NewPost() {
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const post = { title: title, body: body };
-    createPost(post)
-      .then(() => {
-        navigate('/posts');
-      })
-      .catch(error => { console.error('Error creating post:', error); }
-    );
+  const handleSubmit = async (formData) => {
+    try {
+      const response = await createPost(formData);
+      navigate('/posts');
+    } catch (error) {
+      console.error('Error creating post: ', error);
+    } 
   }
 
   return (
-    <Container maxWidth="sm">
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
-        <TextField
-          fullWidth
-          id="title"
-          label="Title"
-          name="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-          margin="normal"
-          variant="outlined"
-        />
-        <TextField
-          fullWidth
-          id="body"
-          label="Body"
-          name="body"
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          required
-          margin="normal"
-          variant="outlined"
-          multiline
-          rows={4}
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          startIcon={<AddBoxIcon />}
-          color="primary"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Create Post
-        </Button>
-      </Box>
-    </Container>
+    <PostForm
+      post={{ title: '', body: '' }} 
+      onSubmit={handleSubmit} 
+      buttonText="Create Post" 
+    />
   );
 }
 
