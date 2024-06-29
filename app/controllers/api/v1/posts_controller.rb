@@ -35,17 +35,19 @@ class Api::V1::PostsController < ApplicationController
 
   # DELETE /posts/1
   def destroy
+    logger.info { "Destroying post: #{@post.attributes.inspect}" }
     @post.destroy!
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_post
-      @post = Post.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def post_params
-      params.require(:post).permit(:title, :body)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def post_params
+    params.require(:post).permit(:title, :body)
+  end
 end
