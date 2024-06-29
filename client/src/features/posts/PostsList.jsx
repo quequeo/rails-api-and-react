@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { red, purple, indigo, blue, cyan} from '@mui/material/colors';
 
 function PostsList() {
   const [posts, setPosts] = useState([]);
@@ -62,14 +63,14 @@ function PostsList() {
                   to={`/posts/${post.id}/edit`}
                   variant="contained"
                   startIcon={<EditIcon />}
-                  color="primary"
+                  style={{ backgroundColor: indigo[500], color: '#fff' }}
                 >
                   Edit post
                 </Button>
                 <Button
                   variant="contained" 
                   startIcon={<DeleteIcon />}
-                  color="secondary"
+                  style={{ backgroundColor: red[400], color: '#fff' }}
                   onClick={() => handleDelete(post.id)}
                 >
                   Delete
