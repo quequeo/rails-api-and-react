@@ -70,4 +70,6 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   config.log_level =:info
+
+  Rails.application.routes.default_url_options[:host] = 'http://localhost:3000'
 end

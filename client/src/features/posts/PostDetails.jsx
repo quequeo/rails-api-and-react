@@ -53,6 +53,12 @@ function PostDetails() {
               <Typography variant="body1" component="p" gutterBottom>
                 {post.body}
               </Typography>
+
+              {post.image_url && (
+                <Box mt={2}>
+                  <img src={post.image_url} alt="Preview" style={{ width: '200px', height: 'auto' }} />
+                </Box>
+              )}
               <Box mt={2}>
                 <Button 
                   component={Link} 
