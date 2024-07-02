@@ -23,7 +23,6 @@ function PostsList() {
       } catch (error) {
         setError(error);
         setLoading(false);
-        console.log(error);
       }
     }
     fetchPosts();
@@ -36,11 +35,11 @@ function PostsList() {
       })
       .catch(error => {
         setError(error);
-        console.log(error);
       }
     );
   };
-    
+  
+
 
   return (
     <Container>
@@ -50,12 +49,18 @@ function PostsList() {
         <Box mt={2}>
           {posts.map(post => (
             <Paper key={post.id} elevation={3} style={{ padding: '16px', marginBottom: '16px' }}>
+              {post.image}
               <Typography variant="h5" component={Link} to={`/posts/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 {post.title}
               </Typography>
               <Typography variant="body1" paragraph>
                 {post.body}
               </Typography>
+              {post.image_url && (
+                <Box mt={2}>
+                  <img src={post.image_url} alt="Preview" style={{ width: '200px', height: 'auto' }} />
+                </Box>
+              )}
               <Box display="flex" justifyContent="space-between">
                 <Button
                   component={Link}

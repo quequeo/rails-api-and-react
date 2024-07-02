@@ -16,30 +16,27 @@ async function fetchPostById(id) {
   return response.json();
 }
 
-async function createPost(post) {
+async function createPost(postData) {
   const response = await fetch(`${API_URL}/posts`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(post),
+    body: postData
   });
   if (!response.ok) {
     throw new Error(`Error creating post: ${response.statusText}`);
   }
 }
 
-async function updatePost(id, post) {
+async function updatePost(id, postData) {
+  console.log('Sending data to server:', Object.fromEntries(postData));
   const response = await fetch(`${API_URL}/posts/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(post),
+    method: 'PATCH',  // Cambiamos PUT por PATCH
+    body: postData,
   });
   if (!response.ok) {
-    throw new Error(`Error updating post: ${response.statusText}`);
+    const errorData = await response.json();
+    throw new Error(errorData.message || `Error updating post: ${response.statusText}`);
   }
+  return response.json();
 }
 
 async function deletePost(id) {
