@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchAllPosts, deletePost } from '../../services/postService';
+import { deletePost } from '../../services/postService';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -8,26 +8,28 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { red, purple, indigo, blue, cyan} from '@mui/material/colors';
+import { red, indigo } from '@mui/material/colors';
+
+import SearchBar from './SearchBar';
+import usePostsData from '../../hooks/usePostsData';
+import useURLSearchParam from "../../hooks/useURLSearchParam";
 
 function PostsList() {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('')
+  const [debounceSearchTerm, setDebounceSearchTerm] = useURLSearchParam('search');
+
+  const {
+    posts: fetchedPosts,
+    loading,
+    error,
+  } = usePostsData(debounceSearchTerm);
 
   useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const data = await fetchAllPosts();
-        setPosts(data);
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
+    if (fetchedPosts) {
+      setPosts(fetchedPosts);
     }
-    fetchPosts();
-  }, []);
+  }, [fetchedPosts]);
 
   const handleDelete = (post_id) => {
     deletePost(post_id)
@@ -39,14 +41,25 @@ function PostsList() {
       }
     );
   };
-  
 
+  const handleInmediateSearchChange = (searchValue) => {
+    setSearchTerm(searchValue);
+  }
+
+  const handleDebounceSearchChange = (searchValue) => {
+    setDebounceSearchTerm(searchValue);
+  }
 
   return (
     <Container>
       <Box mt={4}>
         {loading && <Typography>Loading posts...</Typography>}
         {error && <Typography color="error">Error loading posts: {error.message}</Typography>}
+        <SearchBar
+          value={searchTerm}
+          onImmediateChange={handleInmediateSearchChange}
+          onDebounceChange={handleDebounceSearchChange}
+        />
         <Box mt={2}>
           {posts.map(post => (
             <Paper key={post.id} elevation={3} style={{ padding: '16px', marginBottom: '16px' }}>

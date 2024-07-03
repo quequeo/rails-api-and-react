@@ -13,6 +13,7 @@ class Api::V1::PostsController < ApplicationController
       end
     end
 
+    Rails.logger.info "Número de posts recuperados: #{post_with_images.count}"
     render json: post_with_images
   end
 

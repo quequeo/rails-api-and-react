@@ -1,5 +1,2 @@
-const localhostApiVersion = 'v1';
-const localhostApiUrl = `http://localhost:3000/api/${localhostApiVersion}`
-
-export const API_URL = 
-  process.env.NODE_ENV === 'test' ? localhostApiUrl : import.meta.env.VITE_API_URL;
+export const POSTS_API_URL = import.meta.env.VITE_POSTS_API_URL || 'http://localhost:3000/api/v1/posts';
+export const SEARCH_API_URL = import.meta.env.VITE_SEARCH_API_URL || 'http://localhost:3000/api/v1/search/posts';
