@@ -1,51 +1,76 @@
-import { API_URL } from "../../constants";
+import { POSTS_API_URL, SEARCH_API_URL } from "../../constants.js";
 
 async function fetchAllPosts() {
-  const response = await fetch(`${API_URL}/posts`);
+  const response = await fetch(`${POSTS_API_URL}`);
   if (!response.ok) {
-    throw new Error(`Error fetching posts: ${response.statusText}`);
+    throw new Error(response.statusText);
   }
-  return response.json();
+  const data = await response.json();
+  return data;
 }
 
 async function fetchPostById(id) {
-  const response = await fetch(`${API_URL}/posts/${id}`);
+  const response = await fetch(`${POSTS_API_URL}/${id}`);
   if (!response.ok) {
-    throw new Error(`Error fetching post: ${response.statusText}`);
+    throw new Error(response.statusText);
   }
   return response.json();
 }
 
 async function createPost(postData) {
-  const response = await fetch(`${API_URL}/posts`, {
-    method: 'POST',
-    body: postData
+  const response = await fetch(`${POSTS_API_URL}`, {
+    method: "POST",
+    // Doesn't  need headers because it's a formData
+    body: postData,
   });
+
   if (!response.ok) {
-    throw new Error(`Error creating post: ${response.statusText}`);
+    throw new Error(response.statusText);
   }
+
+  return response.json();
 }
 
 async function updatePost(id, postData) {
-  console.log('Sending data to server:', Object.fromEntries(postData));
-  const response = await fetch(`${API_URL}/posts/${id}`, {
-    method: 'PATCH',  // Cambiamos PUT por PATCH
+  const response = await fetch(`${POSTS_API_URL}/${id}`, {
+    method: "PUT",
     body: postData,
   });
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || `Error updating post: ${response.statusText}`);
+    throw new Error(response.statusText);
   }
   return response.json();
 }
 
 async function deletePost(id) {
-  const response = await fetch(`${API_URL}/posts/${id}`, {
-    method: 'DELETE',
+  const response = await fetch(`${POSTS_API_URL}/${id}`, {
+    method: "DELETE",
   });
-  if (!response.ok) {
-    throw new Error(`Error deleting post: ${response.statusText}`);
+
+  // 204 is No Content status
+  if (response.status === 204) {
+    return null;
   }
+
+  throw new Error(response.statusText);
 }
 
-export { fetchAllPosts, fetchPostById, createPost, updatePost, deletePost };
+async function searchPosts(query) {
+  const response = await fetch(
+    `${SEARCH_API_URL}?query=${encodeURIComponent(query)}`
+  );
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+  const data = await response.json();
+  return data;
+}
+
+export {
+  createPost,
+  deletePost,
+  fetchAllPosts,
+  fetchPostById,
+  updatePost,
+  searchPosts,
+};

@@ -39,14 +39,8 @@ function EditPost() {
       postData.append('post[image]', 'DELETE');
     }
   
-    console.log('FormData contents:');
-    for (let [key, value] of postData.entries()) {
-      console.log(key, value);
-    }
-  
     try {
       const updatedPost = await updatePost(id, postData);
-      console.log('Updated post:', updatedPost);
       navigate('/posts');
     } catch (error) {
       console.error('Error updating post: ', error);
