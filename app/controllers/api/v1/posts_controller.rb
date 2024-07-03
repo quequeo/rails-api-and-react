@@ -3,27 +3,19 @@ class Api::V1::PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.order(created_at: :desc)
-    
-    post_with_images = @posts.map do |post|
-      if post.image.attached?
-        post.attributes.merge(image_url: url_for(post.image))
-      else
-        post.attributes.merge(image_url: nil)
-      end
-    end
+    @posts = Post.all.order(created_at: :desc)
+    posts_with_images = paginate_posts(@posts, posts_per_page)
 
-    Rails.logger.info "Número de posts recuperados: #{post_with_images.count}"
-    render json: post_with_images
+    render json: {
+      posts: posts_with_images,
+      total_posts_count: @posts.count,
+      per_page: posts_per_page
+    }
   end
 
   # GET /posts/1
   def show
-    if @post.image.attached?
-      @post = @post.attributes.merge(image_url: url_for(@post.image))
-    else
-      @post = @post.attributes.merge(image_url: nil)
-    end
+    @post = augment_with_image(@post)
     
     render json: @post
   end

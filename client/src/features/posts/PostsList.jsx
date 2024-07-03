@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { deletePost } from '../../services/postService';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -14,22 +14,37 @@ import SearchBar from './SearchBar';
 import usePostsData from '../../hooks/usePostsData';
 import useURLSearchParam from "../../hooks/useURLSearchParam";
 
+import Pagination from "./Pagination";
+
 function PostsList() {
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('')
   const [debounceSearchTerm, setDebounceSearchTerm] = useURLSearchParam('search');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialPageFromURL = Number(searchParams.get("page") || "1");
+  const [currentPage, setCurrentPage] = useState(initialPageFromURL);
 
   const {
     posts: fetchedPosts,
-    loading,
-    error,
-  } = usePostsData(debounceSearchTerm);
+    loading: loading,
+    error: error,
+    totalPosts: totalPosts,
+    perPage: perPage
+  } = usePostsData(debounceSearchTerm, currentPage);
 
   useEffect(() => {
     if (fetchedPosts) {
       setPosts(fetchedPosts);
     }
   }, [fetchedPosts]);
+
+  useEffect(() => {
+    const initialSearchTerm = searchParams.get("search") || "";
+    setSearchTerm(initialSearchTerm);
+
+    const pageFromURL = searchParams.get("page") || "1";
+    setCurrentPage(Number(pageFromURL));
+  }, [searchParams]);
 
   const handleDelete = (post_id) => {
     deletePost(post_id)
@@ -50,6 +65,13 @@ function PostsList() {
     setDebounceSearchTerm(searchValue);
   }
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+
+    // Update the URL to include the page number
+    setSearchParams({ search: debounceSearchTerm, page: page.toString() });
+  };
+
   return (
     <Container>
       <Box mt={4}>
@@ -59,6 +81,12 @@ function PostsList() {
           value={searchTerm}
           onImmediateChange={handleInmediateSearchChange}
           onDebounceChange={handleDebounceSearchChange}
+        />
+        <Pagination
+          currentPage={currentPage}
+          totalPosts={totalPosts}
+          postsPerPage={perPage}
+          onPageChange={handlePageChange}
         />
         <Box mt={2}>
           {posts.map(post => (
